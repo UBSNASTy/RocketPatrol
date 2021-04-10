@@ -55,7 +55,7 @@ class Play extends Phaser.Scene {
         // animation config
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosions', {
+            frames: this.anims.generateFrameNumbers('explosion', {
                 start: 0,
                 end: 9,
                 first: 0
@@ -77,15 +77,15 @@ class Play extends Phaser.Scene {
         // check collisions
         if(this.checkCollision(this.p1Rocket, this.ship01)) {
             this.p1Rocket.reset();
-            this.ship01.reset();
+            this.shipExplode(this.ship01);
         }
         if(this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
-            this.ship02.reset();
+            this.shipExplode(this.ship02);
         }
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
-            this.ship03.reset();
+            this.shipExplode(this.ship03);
         }
     }
 
@@ -100,5 +100,18 @@ class Play extends Phaser.Scene {
         } else {
             return false;
         }
+    }
+
+    shipExplode(ship) {
+        // temporarily hide ship
+        ship.alpha = 0;     // makes transparent
+        // create explosion sprite at ship's position
+        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);    // places sprite where it was
+        boom.anims.play('explode');     // plays animation
+        boom.on('animationcomplete', () => {        // once animation is complete
+            ship.reset();
+            ship.alpha = 1;
+            boom.destroy();
+        });
     }
 }
