@@ -19,6 +19,7 @@ class Play extends Phaser.Scene {
         });
     }
 
+    // creates
     create() {
         // place starfield
         this.starfield = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'starfield').setOrigin(0, 0);
